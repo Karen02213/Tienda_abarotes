@@ -1,0 +1,6 @@
+src/assets/uploads/*
+!src/assets/uploads/.gitkeep
+.DS_Store
+*.log
+vendor/
+node_modules/
