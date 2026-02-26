@@ -1,11 +1,35 @@
 version: '3.8'
 
 services:
-  web:
-    build: .
-    container_name: tienda-web
+  # Balanceador de carga (Frontend)
+  balancer:
+    build: 
+      context: .
+      dockerfile: docker/apache/Dockerfile
+    container_name: tienda-balancer
     ports:
-      - "8081:80"
+      - "80:80"  # Puerto principal del balanceador
+    depends_on:
+      - app1
+      - app2
+
+  # Servidor Backend 1
+  app1:
+    build: .
+    container_name: tienda-app1
+    environment:
+      - INSTANCE_ID=Servidor_1
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - db
+
+  # Servidor Backend 2
+  app2:
+    build: .
+    container_name: tienda-app2
+    environment:
+      - INSTANCE_ID=Servidor_2
     volumes:
       - ./src:/var/www/html
     depends_on:
@@ -14,6 +38,8 @@ services:
   db:
     image: mariadb:latest
     container_name: tienda-db
+    ports:
+      - "3306:3306"  # Exponer puerto para la VM
     environment:
       MARIADB_ROOT_PASSWORD: rootpassword
       MARIADB_DATABASE: tiendadb

@@ -1,17 +1,35 @@
 <?php
 session_start();
 include 'includes/db.php';
+
+// Mostrar el servidor que responde (Balanceo de carga)
+$instance_id = getenv('INSTANCE_ID') ? getenv('INSTANCE_ID') : 'Servidor Local';
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tienda de Abarrotes</title>
+    <title>Tienda de Abarrotes - <?php echo $instance_id; ?></title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .server-badge {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: #ff0000;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            z-index: 9999;
+            box-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+    </style>
 </head>
 <body>
+    <div class="server-badge">Conectado a: <?php echo $instance_id; ?></div>
     <header>
         <div class="container">
             <div id="branding">
